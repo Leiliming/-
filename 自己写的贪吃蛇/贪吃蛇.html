@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Document</title>
+    <script>
+        var map,
+            snake,
+            food,
+            timer,
+            sum = 0;
+        function Map() {
+            this.width = 800;
+            this.height = 600;
+            this.position = "relative";
+            this.backgroundColor = "#D1EEEE";
+            this.margin = '0 auto';
+
+            this.showMap = function () {
+
+                this._map = document.createElement('div');
+                this._map.style.width = this.width + 'px';
+                this._map.style.height = this.height + 'px';
+                this._map.style.backgroundColor = this.backgroundColor;
+                this._map.style.position = this.position;
+                this._map.style.margin = this.margin;
+                document.body.appendChild(this._map);
+
+            }
+        }
+
+        function Food() {
+            this.position = 'absolute'
+            this.width = 20;
+            this.backgroundColor = '#9ACD32';
+            this._food = null;
+            this.x = 0;
+            this.y = 0;
+            this.showFood = function () {
+                if (this._food == null) {
+                    this._food = document.createElement('div');
+                    this._food.style.position = this.position;
+                    this._food.style.height = this.width + 'px';
+                    this._food.style.width = this.width + 'px';
+                    this._food.style.backgroundColor = this.backgroundColor;
+                    map._map.appendChild(this._food);
+
+                }
+                this.x = Math.floor(Math.random() * 40);
+                this.y = Math.floor(Math.random() * 30);
+                this._food.style.left = this.width * this.x + 'px';
+                this._food.style.top = this.width * this.y + 'px';
+            }
+
+        }
+        function Snake() {
+            this.body = [[4, 1, null, 'red'], [3, 1, null, '#D15FEE'], [2, 1, null, '#D15FEE']];  //第一位是列，第二位是行
+            this.width = 20;
+            this.height = 20;
+            this.position = 'absolute';
+            this.direct = '';
+            this.setDirect = function (code) {
+                if (code == 37 && this.direct != 'right') { this.direct = "left"; }
+                if (code == 38 && this.direct != 'down') { this.direct = "top"; }
+                if (code == 39 && this.direct != 'left') { this.direct = "right"; }
+                if (code == 40 && this.direct != 'top') { this.direct = "down"; }
+            }
+            this.showSnake = function () {
+                for (var i = 0; i < this.body.length; i++) {
+                    if (this.body[i][2] == null) {
+                        this.body[i][2] = document.createElement('div');
+                        this.body[i][2].style.position = this.position;
+                        this.body[i][2].style.width = this.width + 'px';
+                        this.body[i][2].style.height = this.height + 'px';
+                        this.body[i][2].style.backgroundColor = this.body[i][3];
+                        map._map.appendChild(this.body[i][2]);
+                    }
+
+
+                    this.body[i][2].style.top = this.body[i][1] * this.height + 'px';
+                    this.body[i][2].style.left = this.body[i][0] * this.width + 'px';
+
+
+                }
+            }
+            this.move = function () {
+                var length = this.body.length - 1;
+                if (this.direct) {
+                    for (var i = length; i > 0; i--) {
+                        this.body[i][0] = this.body[i - 1][0];//横坐标
+                        this.body[i][1] = this.body[i - 1][1];//纵坐标
+                    }
+
+                }
+                switch (this.direct) {
+                    case 'left': //左  
+                        this.body[0][0] = this.body[0][0] - 1;
+                        break;
+                    case 'top': //上
+                        this.body[0][1] = this.body[0][1] - 1;
+                        break;
+                    case 'right': //右
+                        this.body[0][0] = this.body[0][0] + 1;
+                        break;
+                    case 'down': //下
+                        this.body[0][1] = this.body[0][1] + 1;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (this.body[0][0] == food.x && this.body[0][1] == food.y) {
+                    var x = this.body[this.body.length - 1][0];
+                    var y = this.body[this.body.length - 1][1];
+                    sum++;
+                    document.title = '分数：' + sum + '分';
+                    this.body.push([x, y, null, '#D15FEE']);
+                    food.showFood();
+                }
+                if (this.body[0][0] > 39) {
+                    this.body[0][0] = 0;
+                }
+                if (this.body[0][0] < 0) {
+                    this.body[0][0] = 39;
+                }
+                if (this.body[0][1] > 29) {
+                    this.body[0][1] = 0;
+                }
+                if (this.body[0][1] < 0) {
+                    this.body[0][1] = 29;
+                }
+                for (var i = 1; i < this.body.length; i++) {
+                    if (this.body[0][0] == this.body[i][0] && this.body[0][1] == this.body[i][1]) {
+                        this.direct = null;
+                        clearInterval(timer);
+                        alert('吃到自己死');
+                        return;
+
+                    }
+                }
+                this.showSnake();
+            }
+
+        }
+
+        window.onload = function () {
+            map = new Map();
+            map.showMap();
+            food = new Food();
+            food.showFood();
+            snake = new Snake();
+            snake.showSnake();
+
+            timer = setInterval('snake.move()', 90);
+
+
+            addEventListener('keydown', function (e) {
+
+                var e = e || window.event
+
+                snake.setDirect(e.keyCode);
+            }, false);
+        }
+
+
+    </script>
+</head>
+
+<body>
+
+
+</body>
+
+
+
+
+</html>

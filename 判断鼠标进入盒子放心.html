@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-size: 0;
+    }
+
+    div {
+        margin: 200px auto 0;
+        width: 200px;
+        height: 200px;
+        background: red;
+    }
+</style>
+
+<body>
+    <div>
+
+
+    </div>
+    <script>
+        var oDiv = document.getElementsByTagName('div')[0];
+
+        function bindEvent() {
+            oDiv.onmouseenter = function (e) {
+
+                dirc(e)
+            }
+            oDiv.onmouseleave = function (e) {
+                dirc(e)
+            }
+        }
+
+        function dirc(event) {
+            var w = oDiv.offsetWidth;
+            var h = oDiv.offsetHeight;
+            var l = oDiv.offsetLeft;
+            var t = oDiv.offsetTop;
+            var x = (event.clientX - l - w / 2) * (w > h ? w * (h / w) : 1);
+            var y = (event.clientY - t - h / 2) * (h > w ? h * (w / h) : 1);
+            console.log((Math.round(((Math.atan2(y, x) * (180 / Math.PI)) / 90)) + 3) % 4)
+        }
+        bindEvent();
+    </script>
+</body>
+
+</html>

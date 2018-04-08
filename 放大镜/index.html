@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+    * {
+        margin: 0;
+        height: 0;
+    }
+
+    .wrapper {
+        height: 500px;
+        width: 500px;
+        border: 1px solid black;
+        position: relative;
+        margin: 20px;
+    }
+
+    .imgCont {
+        width: 100%;
+        height: 100%;
+    }
+
+    .img {
+        height: 100%;
+        width: 100%;
+        background: url('./1.jpg') 0% 0% no-repeat;
+        background-size: 500px 500px;
+    }
+
+    .moveBox {
+        position: absolute;
+        cursor: move;
+        background-color: #eee;
+        opacity: 0.5;
+        z-index: 999;
+    }
+
+    .bigImg {
+        position: absolute;
+        top: 0;
+        left: 105%;
+        height:500px;
+        width: 500px;
+        border: 1px solid black;
+        display: none;
+        overflow: hidden;
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <div class="imgCont">
+            <div class="img"> </div>
+            <div class="moveBox"></div>
+        </div>
+        <div class="bigImg">
+            <img src="./1.jpg" alt="">
+        </div>
+    </div>
+    <script src="./jquery-3.0.0.js"></script>
+    <script>
+        var wrapper = $('.wrapper');
+        var imgCont = $('.imgCont');
+        var moveView = $('.moveBox');
+        var bigImg = $('.bigImg');
+        var w, h;
+
+        function bindEvent() {
+            imgCont.on('mousemove', function (e) {
+                move(e, 2);
+            }).on('mouseleave', function () {
+                moveView.hide();
+                bigImg.hide();
+            })
+        }
+
+        function move(event, mul) {
+            w = 500 / mul;
+            h = 500 / mul;
+            var maxL = 500 - w;
+            var maxT = 500 - h;
+            var minL = 0;
+            var minT = 0;
+            var X = event.clientX - wrapper.offset().left - w / 2;
+            var Y = event.clientY - wrapper.offset().top - h / 2;
+            var endL = (X > minL) ? (X < maxL) ? X : maxL : minL;
+            var endT = (Y > minT) ? (Y < maxT) ? Y : maxT : minT;
+
+            moveView.css({
+                'height': h + 'px',
+                'width': w + 'px',
+                'display': 'block',
+                'left': endL + 'px',
+                'top': endT + 'px'
+            })
+            bigImg.css({
+                'display': 'block',
+            }).find('img').css({
+                'width': mul * 500 + 'px',
+                'height': mul * 500 + 'px',
+                'margin-left': -endL * mul,
+                'margin-top': -endT * mul
+            })
+
+        }
+        bindEvent();
+    </script>
+</body>
+
+</html>

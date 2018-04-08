@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+
+    }
+
+
+
+    .wrapper {
+        margin: 200px;
+    }
+
+    input {
+        width: 400px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    ul {
+        width: 402px;
+        border: 1px solid black;
+        display: none;
+        font-size: 20px;
+    }
+
+    li:hover {
+        background: #888;
+    }
+
+    a {
+        display: inline-block;
+        margin: 5px;
+        color: #000;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <input type="text">
+        <ul id='ul'></ul>
+    </div>
+    <script>
+        var oInput = document.getElementsByTagName('input')[0];
+        oInput.oninput = function () {
+            var oScript = document.createElement('script');
+            oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + this.value + '&cb=callback';
+            document.body.appendChild(oScript);
+            oScript.remove()
+        }
+        function callback(data) {
+
+            var s = data.s, str = ''
+            if (s.length > 0) {
+                s.forEach(function (ele, index) {
+                    str += '<li><a href ="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu&wd=' + ele + '"target="_blank" >' + ele + '</a></li>';
+                })
+                ul.innerHTML = str;
+                ul.style.display = 'block';
+            } else {
+                ul.style.display = 'none';
+            }
+
+        }
+    </script>
+</body>
+
+</html>

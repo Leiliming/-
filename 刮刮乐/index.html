@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>刮刮乐</title>
+    <style>
+        canvas {
+            background-repeat: no-repeat;
+            background-size:500px 500px;
+            background-position:center center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas height="300" width="300" id="myCanvas"></canvas>
+    <script>
+        var oCanvas = document.getElementById('myCanvas');
+        var ctx = oCanvas.getContext('2d');
+        var h = oCanvas.height;
+        var w = oCanvas.width;
+        var l = oCanvas.offsetLeft;
+        var t = oCanvas.offsetTop;
+        var lastX, lastY, nowX, nowY;
+        // console.log(t);
+        init();
+
+        function init() {
+            ctx.fillStyle = '#ccc';
+            ctx.fillRect(0, 0, w, h);
+            ctx.globalCompositeOperation = 'destination-out';
+            var p;
+            var r = Math.random();
+            r < 0.5 ? p = 1 : p = 2;
+            var img = new Image();
+            img.src = './' + p + '.jpg';
+            img.onload = function () {
+                oCanvas.style.backgroundImage = 'url(' + img.src + ')';
+                document.addEventListener('mousedown', downFu, false);
+            }
+        }
+
+        function downFu(e) {
+            lastX = e.clientX - l;
+            lastY = e.clientY - t;
+            oCanvas.addEventListener('mousemove', moveFu, false);
+            document.addEventListener('mouseup', upFu, false);
+        }
+
+        function moveFu(e) {
+            nowX = e.clientX - l;
+            nowY = e.clientY - t;
+            ctx.beginPath();
+            ctx.fillStyle = 'red';
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 40;
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(nowX, nowY);
+            ctx.stroke();
+
+            lastX = nowX;
+            lastY = nowY;
+        }
+
+        function upFu() {
+            oCanvas.removeEventListener('mousemove', moveFu, false);
+            document.removeEventListener('mouseup', upFu, false);
+            clearAll();
+        }
+
+        function clearAll() {
+            var d = ctx.getImageData(0, 0, w, h);
+            var c = 0;
+            var len = d.data.length;
+
+
+            for (var i = 0; i < len; i += 4) {
+
+                if (d.data[i] == 0) {
+                    c++;
+
+                }
+
+            }
+            console.log(c)
+            if (c > w * h * 0.7) {
+                ctx.clearRect(0, 0, w, h)
+            }
+        }
+    </script>
+</body>
+
+</html>

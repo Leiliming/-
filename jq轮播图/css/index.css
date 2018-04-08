@@ -1,0 +1,92 @@
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 0;
+}
+
+.wrapper {
+    position: relative;
+    margin: 200px auto 0;
+    width: 520px;
+    height: 280px;
+    overflow: hidden;
+    border: 1px solid #000;
+}
+
+.img-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3120px;
+    height: 280px;
+}
+
+.img-box li {
+    display: inline-block;
+    width: 520px;
+    height: 280px;
+}
+
+.img-box li a {
+    display: inline-block;
+}
+
+.img-box li a img {
+    width: 520px;
+    height: 280px;
+}
+
+.wrapper .btn {
+    display: none;
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    top: 50%;
+    margin-top: -15px;
+}
+
+.wrapper .btn a {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #000;
+    opacity: 0.6;
+}
+
+.wrapper .btn .prevBtn {
+    left: 0px;
+    border-radius: 0 50% 50% 0;
+}
+
+.wrapper .btn .nextBtn {
+    right: 0px;
+    border-radius: 50% 0 0 50%;
+}
+
+.wrapper .order {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.wrapper .order ul {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+}
+
+.wrapper .order ul li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 3px 3px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.wrapper .order ul .active {
+    background: orange;
+}
